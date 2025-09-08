@@ -1,0 +1,30 @@
+# Security Headers for Production Deployment
+# This file works with Netlify, Vercel, and other static hosting providers
+
+/*
+  # Content Security Policy - Prevents XSS attacks
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://*.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co https://api.supabase.io wss://*.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+
+  # Prevent MIME type sniffing
+  X-Content-Type-Options: nosniff
+
+  # Enable XSS protection
+  X-XSS-Protection: 1; mode=block
+
+  # Prevent clickjacking
+  X-Frame-Options: DENY
+
+  # Enforce HTTPS
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+  # Control referrer information
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # Feature policy
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+
+  # Remove server information
+  X-Powered-By: 
+
+  # Cache control for security
+  Cache-Control: no-cache, no-store, must-revalidate

@@ -1,46 +1,139 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Audiowide&display=swap');
 @import "tailwindcss";
 
-@layer base {
-  * {
-    box-sizing: border-box;
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #0a1428 0%, #1a1f3a 25%, #2d1b69 50%, #1a1f3a 75%, #0a1428 100%);
+  background-attachment: fixed;
+  color: #ffffff;
+  font-family: 'Orbitron', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure all text is visible by default */
+h1, h2, h3, h4, h5, h6, p, span, div, a {
+  color: inherit;
+}
+
+/* Component styles */
+.cyberpunk-bg {
+  background: linear-gradient(135deg, #0a1428 0%, #1a2040 50%, #2d1b69 100%);
+}
+
+.neon-border {
+  border: 1px solid;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.cyberpunk-card {
+  position: relative;
+  background: rgba(10, 20, 40, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 0.5rem;
+}
+
+.cyberpunk-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 212, 212, 0.15) 0%, rgba(255, 107, 53, 0.15) 50%, rgba(255, 69, 0, 0.1) 100%);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.neon-pulse {
+  animation: neon-pulse 2s ease-in-out infinite alternate;
+}
+
+.radial-glow {
+  position: relative;
+}
+
+.radial-glow::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 107, 53, 0.1) 0%, rgba(29, 233, 182, 0.05) 50%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Neon text effects - Reduced brightness */
+.text-neon {
+  text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 20px currentColor;
+}
+
+.text-neon-sm {
+  text-shadow: 0 0 3px currentColor, 0 0 6px currentColor;
+}
+
+.text-neon-lg {
+  text-shadow: 0 0 8px currentColor, 0 0 15px currentColor, 0 0 30px currentColor;
+}
+
+.text-neon-xl {
+  text-shadow: 0 0 6px currentColor, 0 0 12px currentColor, 0 0 25px currentColor, 0 0 50px currentColor, 0 0 75px currentColor;
+}
+
+.text-neon-intense {
+  text-shadow: 0 0 4px currentColor, 0 0 8px currentColor, 0 0 15px currentColor, 0 0 25px currentColor, 0 0 35px currentColor;
+}
+
+/* Additional vibrant neon colors */
+.text-electric-blue {
+  color: #00BFFF;
+  text-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 20px #00BFFF;
+}
+
+.text-hot-pink {
+  color: #FF1493;
+  text-shadow: 0 0 5px #FF1493, 0 0 10px #FF1493, 0 0 20px #FF1493;
+}
+
+.text-lime-green {
+  color: #32FF32;
+  text-shadow: 0 0 5px #32FF32, 0 0 10px #32FF32, 0 0 20px #32FF32;
+}
+
+.text-purple-neon {
+  color: #BF40BF;
+  text-shadow: 0 0 5px #BF40BF, 0 0 10px #BF40BF, 0 0 20px #BF40BF;
+}
+
+/* Animations */
+@keyframes neon-pulse {
+  0%, 100% {
+    opacity: 1;
   }
-  body {
-    background-color: black;
-    font-family: 'Orbitron', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  50% {
+    opacity: 0.5;
   }
 }
 
-@layer components {
-  .cyberpunk-bg {
-    background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #111111 100%);
+@keyframes glow-pulse {
+  from {
+    text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 20px currentColor;
   }
-  
-  .neon-border {
-    border: 1px solid;
-    box-shadow: 0 0 10px currentColor;
+  to {
+    text-shadow: 0 0 8px currentColor, 0 0 15px currentColor, 0 0 30px currentColor, 0 0 45px currentColor;
   }
-  
-  .cyberpunk-card {
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 255, 255, 0.3);
-    border-radius: 0.5rem;
-  }
-  
-  .cyberpunk-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 102, 0, 0.1) 100%);
-    border-radius: inherit;
-    z-index: -1;
-  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite alternate;
 }
 
 /* Custom scrollbar */
@@ -49,14 +142,32 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #111;
+  background: #1a1f3a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ff6600;
+  background: linear-gradient(45deg, #FF6B35, #00D4D4);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff0044;
+  background: linear-gradient(45deg, #FF4500, #1DE9B6);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1f3a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #FF6B35, #00D4D4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #FF4500, #1DE9B6);
 }

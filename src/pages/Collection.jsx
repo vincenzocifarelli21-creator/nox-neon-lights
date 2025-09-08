@@ -9,8 +9,8 @@ const Collection = () => {
       price: '$299.99',
       image: '/api/placeholder/400/300',
       category: 'Signs',
-      color: 'neon-cyan',
-      description: 'Futuristic blade design with pulsing cyan glow'
+      color: 'neon-teal-electric',
+      description: 'Futuristic blade design with pulsing electric teal glow'
     },
     {
       id: 2,
@@ -18,8 +18,8 @@ const Collection = () => {
       price: '$899.99',
       image: '/api/placeholder/400/300',
       category: 'Art',
-      color: 'neon-red',
-      description: 'Majestic dragon sculpture with animated red flames'
+      color: 'neon-pink-hot',
+      description: 'Majestic dragon sculpture with animated hot pink flames'
     },
     {
       id: 3,
@@ -27,8 +27,8 @@ const Collection = () => {
       price: '$549.99',
       image: '/api/placeholder/400/300',
       category: 'Tech',
-      color: 'neon-orange',
-      description: 'Interactive circuit pattern with orange pathways'
+      color: 'neon-orange-intense',
+      description: 'Interactive circuit pattern with intense orange pathways'
     },
     {
       id: 4,
@@ -36,8 +36,8 @@ const Collection = () => {
       price: '$399.99',
       image: '/api/placeholder/400/300',
       category: 'Abstract',
-      color: 'neon-yellow',
-      description: 'Flowing wave pattern with golden yellow illumination'
+      color: 'neon-purple-bright',
+      description: 'Flowing wave pattern with bright purple illumination'
     },
     {
       id: 5,
@@ -45,8 +45,8 @@ const Collection = () => {
       price: '$199.99',
       image: '/api/placeholder/400/300',
       category: 'Custom',
-      color: 'neon-cyan',
-      description: 'Personalized logo design with cyan edge lighting'
+      color: 'neon-cyan-bright',
+      description: 'Personalized logo design with bright cyan edge lighting'
     },
     {
       id: 6,
@@ -54,8 +54,8 @@ const Collection = () => {
       price: '$449.99',
       image: '/api/placeholder/400/300',
       category: 'Signs',
-      color: 'neon-red',
-      description: 'Cascading code effect with red digital rain'
+      color: 'neon-green-lime',
+      description: 'Cascading code effect with lime green digital rain'
     },
     {
       id: 7,
@@ -63,8 +63,8 @@ const Collection = () => {
       price: '$329.99',
       image: '/api/placeholder/400/300',
       category: 'Art',
-      color: 'neon-orange',
-      description: 'Pulsating heart with warm orange glow'
+      color: 'neon-pink',
+      description: 'Pulsating heart with warm pink glow'
     },
     {
       id: 8,
@@ -72,8 +72,8 @@ const Collection = () => {
       price: '$259.99',
       image: '/api/placeholder/400/300',
       category: 'Signs',
-      color: 'neon-yellow',
-      description: 'Electric bolt design with animated yellow strikes'
+      color: 'neon-yellow-electric',
+      description: 'Electric bolt design with animated electric yellow strikes'
     }
   ];
 

@@ -1,28 +1,11 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: 'Cyber Blade',
-      price: 299.99,
-      quantity: 1,
-      color: 'neon-cyan',
-      option: 'Standard',
-      image: '/api/placeholder/150/150'
-    },
-    {
-      id: 2,
-      name: 'Neon Dragon',
-      price: 899.99,
-      quantity: 2,
-      color: 'neon-red',
-      option: 'RGB Color Change',
-      image: '/api/placeholder/150/150'
-    }
-  ]);
-
+  const navigate = useNavigate();
+  const { cartItems, updateQuantity, removeFromCart, subtotal: cartSubtotal } = useCart();
   const [promoCode, setPromoCode] = useState('');
   const [shippingMethod, setShippingMethod] = useState('standard');
 
@@ -32,21 +15,15 @@ const Cart = () => {
     transition: { duration: 0.6 }
   };
 
-  const updateQuantity = (id, newQuantity) => {
-    if (newQuantity <= 0) {
-      setCartItems(cartItems.filter(item => item.id !== id));
-    } else {
-      setCartItems(cartItems.map(item => 
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      ));
-    }
+  const handleUpdateQuantity = (itemId, newQuantity) => {
+    updateQuantity(itemId, newQuantity);
   };
 
-  const removeItem = (id) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
+  const handleRemoveItem = (itemId) => {
+    removeFromCart(itemId);
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const subtotal = cartSubtotal;
   const shipping = shippingMethod === 'express' ? 29.99 : 0;
   const tax = subtotal * 0.08; // 8% tax
   const total = subtotal + shipping + tax;
@@ -102,7 +79,7 @@ const Cart = () => {
             <div className="lg:col-span-2 space-y-4">
               {cartItems.map((item, index) => (
                 <motion.div
-                  key={item.id}
+                  key={item.itemId}
                   className="cyberpunk-card p-6"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -131,7 +108,7 @@ const Cart = () => {
                     <div className="flex items-center gap-4">
                       <div className="flex items-center border border-neon-cyan/30 rounded-lg">
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => handleUpdateQuantity(item.itemId, item.quantity - 1)}
                           className="px-3 py-2 text-neon-cyan hover:bg-neon-cyan/10 transition-colors"
                         >
                           -
@@ -140,7 +117,7 @@ const Cart = () => {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => handleUpdateQuantity(item.itemId, item.quantity + 1)}
                           className="px-3 py-2 text-neon-cyan hover:bg-neon-cyan/10 transition-colors"
                         >
                           +
@@ -148,7 +125,7 @@ const Cart = () => {
                       </div>
                       
                       <button
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => handleRemoveItem(item.itemId)}
                         className="text-neon-red hover:text-red-400 transition-colors"
                         title="Remove item"
                       >
@@ -248,7 +225,10 @@ const Cart = () => {
                 </div>
 
                 {/* Checkout Button */}
-                <button className="w-full px-6 py-4 bg-gradient-to-r from-neon-orange to-neon-red text-black font-orbitron font-bold text-lg rounded-lg shadow-neon hover:shadow-neon-lg transition-all duration-300 hover:scale-105 mb-4">
+                <button 
+                  onClick={() => navigate('/checkout')}
+                  className="w-full px-6 py-4 bg-gradient-to-r from-neon-orange to-neon-red text-black font-orbitron font-bold text-lg rounded-lg shadow-neon hover:shadow-neon-lg transition-all duration-300 hover:scale-105 mb-4"
+                >
                   PROCEED TO CHECKOUT
                 </button>
 

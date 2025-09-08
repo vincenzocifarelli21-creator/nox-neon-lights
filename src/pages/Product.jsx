@@ -1,11 +1,18 @@
 import { motion } from 'framer-motion';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useCart } from '../context/CartContext';
+import CartToast from '../components/CartToast';
 
 const Product = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedOption, setSelectedOption] = useState('Standard');
+  const [isAdding, setIsAdding] = useState(false);
+  const [isBuying, setIsBuying] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   // Mock product data - in a real app, this would come from an API
   const product = {
@@ -48,13 +55,54 @@ const Product = () => {
     transition: { duration: 0.6 }
   };
 
-  const addToCart = () => {
-    // Add to cart logic would go here
-    console.log(`Added ${quantity} x ${product.name} (${selectedOption}) to cart`);
+  const handleAddToCart = async () => {
+    setIsAdding(true);
+    
+    try {
+      // Add the product to cart with selected options
+      addToCart(product, selectedOption, quantity);
+      
+      // Show success feedback
+      setShowSuccess(true);
+      
+      // Hide success message after 3 seconds
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    } finally {
+      setIsAdding(false);
+    }
+  };
+
+  const handleBuyNow = async () => {
+    setIsBuying(true);
+    
+    try {
+      // Add the product to cart with selected options
+      addToCart(product, selectedOption, quantity);
+      
+      // Navigate to cart page immediately
+      navigate('/cart');
+    } catch (error) {
+      console.error('Error during buy now:', error);
+    } finally {
+      setIsBuying(false);
+    }
   };
 
   return (
     <div className="min-h-screen cyberpunk-bg pt-24 pb-12">
+      {/* Cart Toast Notification */}
+      <CartToast
+        isVisible={showSuccess}
+        product={product}
+        quantity={quantity}
+        selectedOption={selectedOption}
+        onClose={() => setShowSuccess(false)}
+      />
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <motion.nav
@@ -202,13 +250,22 @@ const Product = () => {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
-                  onClick={addToCart}
-                  className="flex-1 px-8 py-4 bg-gradient-to-r from-neon-orange to-neon-red text-black font-orbitron font-bold text-lg rounded-lg shadow-neon hover:shadow-neon-lg transition-all duration-300 hover:scale-105"
+                  onClick={handleAddToCart}
+                  disabled={isAdding}
+                  className={`flex-1 px-8 py-4 border-2 border-neon-orange text-neon-orange font-orbitron font-bold text-lg rounded-lg neon-border hover:bg-neon-orange hover:text-black transition-all duration-300 ${
+                    isAdding ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
+                  }`}
                 >
-                  ADD TO CART
+                  {isAdding ? 'ADDING...' : 'ADD TO CART'}
                 </button>
-                <button className="px-8 py-4 border-2 border-neon-cyan text-neon-cyan font-orbitron font-bold text-lg rounded-lg neon-border hover:bg-neon-cyan hover:text-black transition-all duration-300">
-                  BUY NOW
+                <button 
+                  onClick={handleBuyNow}
+                  disabled={isBuying}
+                  className={`px-8 py-4 border-2 border-neon-cyan text-neon-cyan font-orbitron font-bold text-lg rounded-lg neon-border hover:bg-neon-cyan hover:text-black transition-all duration-300 ${
+                    isBuying ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
+                  }`}
+                >
+                  {isBuying ? 'BUYING...' : 'BUY NOW'}
                 </button>
               </div>
             </div>

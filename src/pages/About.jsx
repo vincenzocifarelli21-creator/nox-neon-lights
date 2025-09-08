@@ -20,19 +20,19 @@ const About = () => {
       name: 'Aria Chen',
       role: 'Founder & Lead Designer',
       description: 'Former corporate architect turned neon artist. Aria brings 15 years of design experience to create the impossible.',
-      color: 'neon-cyan'
+      color: 'neon-teal-electric'
     },
     {
       name: 'Marcus Vale',
       role: 'Chief Technology Officer',
       description: 'Ex-tech corp engineer specializing in advanced LED systems and smart integration technologies.',
-      color: 'neon-orange'
+      color: 'neon-orange-intense'
     },
     {
       name: 'Luna Sato',
       role: 'Creative Director',
       description: 'Street art legend with a passion for cyberpunk culture. Luna transforms urban aesthetics into luminous masterpieces.',
-      color: 'neon-red'
+      color: 'neon-pink-hot'
     }
   ];
 
@@ -41,25 +41,25 @@ const About = () => {
       title: 'Innovation',
       description: 'We push the boundaries of what\'s possible with light, technology, and design.',
       icon: '🔬',
-      color: 'neon-cyan'
+      color: 'neon-cyan-bright'
     },
     {
       title: 'Authenticity',
       description: 'Every piece we create is a genuine expression of cyberpunk culture and artistry.',
       icon: '🎨',
-      color: 'neon-orange'
+      color: 'neon-orange-intense'
     },
     {
       title: 'Quality',
       description: 'We use only the finest materials and cutting-edge technology in every creation.',
       icon: '💎',
-      color: 'neon-red'
+      color: 'neon-pink-hot'
     },
     {
       title: 'Community',
       description: 'We believe in building a community of creators, dreamers, and tech enthusiasts.',
       icon: '🤝',
-      color: 'neon-yellow'
+      color: 'neon-purple-bright'
     }
   ];
 

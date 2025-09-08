@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
+    "@supabase/supabase-js": "^2.57.2",
     "autoprefixer": "^10.4.21",
     "framer-motion": "^12.23.12",
     "postcss": "^8.5.6",
