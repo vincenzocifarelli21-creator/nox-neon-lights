@@ -84,7 +84,8 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
         options: {
-          data: userData
+          data: userData,
+          emailRedirectTo: `${window.location.origin}/email-confirmed`
         }
       });
 
@@ -96,8 +97,22 @@ export const AuthProvider = ({ children }) => {
       if (import.meta.env.DEV) {
         console.error('Sign up error:', error.message);
       }
-      setError(error.message || 'Signup failed');
-      return { data: null, error };
+      
+      // Provide specific error messages for signup
+      let errorMessage;
+      switch (error.message) {
+        case 'User already registered':
+          errorMessage = 'An account with this email already exists. Please sign in instead.';
+          break;
+        case 'Signup is disabled':
+          errorMessage = 'New registrations are currently disabled.';
+          break;
+        default:
+          errorMessage = error.message || 'Account creation failed. Please try again.';
+      }
+      
+      setError(errorMessage);
+      return { data: null, error: { ...error, message: errorMessage } };
     } finally {
       setLoading(false);
     }
@@ -139,14 +154,34 @@ export const AuthProvider = ({ children }) => {
       if (import.meta.env.DEV) {
         console.error('Sign in error:', error.message);
       }
-      // Generic error message to prevent information disclosure
-      setError(error.message === 'Too many login attempts. Please wait before trying again.' 
-        ? error.message 
-        : 'Invalid credentials');
+      
+      // Provide specific error messages for better user experience
+      let errorMessage;
+      switch (error.message) {
+        case 'Email not confirmed':
+          errorMessage = 'Please check your email and click the confirmation link before signing in.';
+          break;
+        case 'Invalid login credentials':
+          errorMessage = 'Invalid email or password. Please check your credentials and try again.';
+          break;
+        case 'Too many login attempts. Please wait before trying again.':
+          errorMessage = error.message;
+          break;
+        case 'User not found':
+          errorMessage = 'No account found with this email address.';
+          break;
+        case 'Wrong password':
+          errorMessage = 'Incorrect password. Please try again.';
+          break;
+        default:
+          errorMessage = 'Sign in failed. Please try again.';
+      }
+      
+      setError(errorMessage);
       
       // Add delay even on error to prevent timing attacks
       await secureDelay();
-      return { data: null, error };
+      return { data: null, error: { ...error, message: errorMessage } };
     } finally {
       setLoading(false);
     }
@@ -242,6 +277,33 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const resendConfirmation = async (email) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/email-confirmed`
+        }
+      });
+
+      if (error) throw error;
+      
+      return { error: null };
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Resend confirmation error:', error.message);
+      }
+      setError('Failed to resend confirmation email');
+      return { error };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const value = {
     user,
     loading,
@@ -252,6 +314,7 @@ export const AuthProvider = ({ children }) => {
     resetPassword,
     updatePassword,
     updateProfile,
+    resendConfirmation,
     isAuthenticated: !!user
   };
 

@@ -18,8 +18,10 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [showResendConfirmation, setShowResendConfirmation] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
   
-  const { signIn, loading } = useAuth();
+  const { signIn, loading, resendConfirmation } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -37,8 +39,10 @@ const Login = () => {
       [name]: sanitizedValue,
     });
     
-    // Clear error when user starts typing
+    // Clear error and resend states when user starts typing
     if (error) setError('');
+    if (showResendConfirmation) setShowResendConfirmation(false);
+    if (resendSuccess) setResendSuccess(false);
   };
 
   const handleSubmit = async (e) => {
@@ -75,6 +79,11 @@ const Login = () => {
       
       if (error) {
         setError(error.message || 'Failed to sign in');
+        
+        // Show resend confirmation option if email is not confirmed
+        if (error.message && error.message.includes('confirmation')) {
+          setShowResendConfirmation(true);
+        }
         return;
       }
 
@@ -82,6 +91,28 @@ const Login = () => {
       navigate(from, { replace: true });
     } catch (err) {
       setError('An unexpected error occurred');
+    }
+  };
+
+  const handleResendConfirmation = async () => {
+    if (!formData.email) {
+      setError('Please enter your email address first');
+      return;
+    }
+
+    try {
+      const { error } = await resendConfirmation(formData.email);
+      
+      if (error) {
+        setError(error.message || 'Failed to resend confirmation email');
+        return;
+      }
+
+      setResendSuccess(true);
+      setShowResendConfirmation(false);
+      setError('');
+    } catch (err) {
+      setError('An unexpected error occurred while resending confirmation email');
     }
   };
 
@@ -108,11 +139,34 @@ const Login = () => {
           </div>
         )}
 
+        {/* Success Message */}
+        {resendSuccess && (
+          <div className="mb-6 p-4 bg-green-500/20 border border-green-500/30 rounded-lg flex items-center space-x-2">
+            <svg className="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p className="text-green-400 text-sm">
+              Confirmation email sent! Please check your inbox and click the confirmation link.
+            </p>
+          </div>
+        )}
+
         {/* Error Message */}
         {error && (
           <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg flex items-center space-x-2">
             <ExclamationTriangleIcon className="w-5 h-5 text-red-400 flex-shrink-0" />
-            <p className="text-red-400 text-sm">{error}</p>
+            <div className="flex-1">
+              <p className="text-red-400 text-sm">{error}</p>
+              {showResendConfirmation && (
+                <button
+                  onClick={handleResendConfirmation}
+                  disabled={loading}
+                  className="mt-2 text-cyan-400 hover:text-cyan-300 text-sm underline disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Resend confirmation email
+                </button>
+              )}
+            </div>
           </div>
         )}
 

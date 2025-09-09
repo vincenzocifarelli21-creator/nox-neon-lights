@@ -14,6 +14,7 @@ import About from './pages/About'
 import Cart from './pages/Cart'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
+import EmailConfirmed from './pages/EmailConfirmed'
 import Checkout from './pages/Checkout'
 import Dashboard from './pages/Dashboard'
 
@@ -60,6 +61,7 @@ function AppContent() {
               <Login />
             </ProtectedRoute>
           } />
+          <Route path="/email-confirmed" element={<EmailConfirmed />} />
           <Route path="/checkout" element={<Checkout />} />
         </Routes>
       )}
