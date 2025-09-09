@@ -43,7 +43,10 @@ const Navbar = () => {
     if (path === '/dashboard') {
       return location.pathname.startsWith('/dashboard');
     }
-    return location.pathname === path;
+    if (path === '/') {
+      return location.pathname === path;
+    }
+    return location.pathname === path || location.pathname.startsWith(path + '/');
   };
 
   return (
