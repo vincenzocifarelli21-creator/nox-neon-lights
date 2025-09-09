@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 
 const SignupSuccess = () => {
-  const [countdown, setCountdown] = useState(15);
   const [userEmail, setUserEmail] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,19 +18,6 @@ const SignupSuccess = () => {
       navigate('/signup');
       return;
     }
-
-    // Auto-redirect to home page after countdown
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          navigate('/');
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
   }, [navigate, location.state]);
 
   const handleResendConfirmation = async () => {
@@ -193,23 +179,6 @@ const SignupSuccess = () => {
           </Link>
         </div>
 
-        {/* Auto-redirect Warning */}
-        <div className="mt-8 text-center">
-          <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4 mb-4">
-            <div className="flex items-center justify-center space-x-2 mb-2">
-              <svg className="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.732 15.5c-.77.833.192 2.5 1.732 2.5z" />
-              </svg>
-              <span className="text-yellow-400 font-semibold text-sm">Auto-redirect Warning</span>
-            </div>
-            <p className="text-yellow-300 text-sm">
-              You will be automatically redirected to the home page in <span className="font-bold text-yellow-400">{countdown} seconds</span>
-            </p>
-            <p className="text-yellow-200 text-xs mt-1">
-              Use the buttons above to navigate manually or wait for automatic redirect
-            </p>
-          </div>
-        </div>
       </motion.div>
     </div>
   );
