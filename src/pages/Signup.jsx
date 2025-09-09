@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { validateEmail, validatePassword, validateName, sanitizeInput, checkUserAgent, rateLimiter } from '../utils/security';
+import PasswordStrengthIndicator from '../components/PasswordStrengthIndicator';
 import {
   EnvelopeIcon,
   KeyIcon,
@@ -10,7 +11,6 @@ import {
   EyeIcon,
   EyeSlashIcon,
   ExclamationTriangleIcon,
-  CheckIcon,
 } from '@heroicons/react/24/outline';
 
 const Signup = () => {
@@ -23,7 +23,6 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   
   const { signUp, loading } = useAuth();
   const navigate = useNavigate();
@@ -41,7 +40,6 @@ const Signup = () => {
     
     // Clear error when user starts typing
     if (error) setError('');
-    if (success) setSuccess('');
   };
 
   const validateForm = () => {
@@ -81,7 +79,6 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setSuccess('');
 
     // Basic bot detection
     if (!checkUserAgent()) {
@@ -109,12 +106,11 @@ const Signup = () => {
         return;
       }
 
-      setSuccess('Account created successfully! Please check your email to confirm your account.');
-      
-      // Optionally redirect after a delay
-      setTimeout(() => {
-        navigate('/login');
-      }, 3000);
+      // Redirect to signup success page with email in state
+      navigate('/signup-success', {
+        state: { email: formData.email },
+        replace: true
+      });
 
     } catch (err) {
       setError('An unexpected error occurred');
@@ -136,14 +132,6 @@ const Signup = () => {
           <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
           <p className="text-gray-400">Join the Nox Neon community</p>
         </div>
-
-        {/* Success Message */}
-        {success && (
-          <div className="mb-6 p-4 bg-green-500/20 border border-green-500/30 rounded-lg flex items-center space-x-2">
-            <CheckIcon className="w-5 h-5 text-green-400 flex-shrink-0" />
-            <p className="text-green-400 text-sm">{success}</p>
-          </div>
-        )}
 
         {/* Error Message */}
         {error && (
@@ -226,9 +214,11 @@ const Signup = () => {
                   )}
                 </button>
               </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Password must be at least 6 characters long
-              </p>
+              
+              {/* Password Strength Indicator */}
+              <div className="mt-3">
+                <PasswordStrengthIndicator password={formData.password} />
+              </div>
             </div>
 
             {/* Confirm Password Field */}

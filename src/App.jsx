@@ -14,6 +14,7 @@ import Product from './pages/Product'
 import About from './pages/About'
 import Cart from './pages/Cart'
 import Signup from './pages/Signup'
+import SignupSuccess from './pages/SignupSuccess'
 import Login from './pages/Login'
 import EmailConfirmed from './pages/EmailConfirmed'
 import Checkout from './pages/Checkout'
@@ -57,6 +58,7 @@ function AppContent() {
               <Signup />
             </ProtectedRoute>
           } />
+          <Route path="/signup-success" element={<SignupSuccess />} />
           <Route path="/login" element={
             <ProtectedRoute requireAuth={false}>
               <Login />
