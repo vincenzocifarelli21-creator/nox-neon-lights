@@ -25,16 +25,23 @@ import { AuthProvider } from './context/AuthContext'
 function AppContent() {
   const location = useLocation()
   const isDashboard = location.pathname.startsWith('/dashboard')
-  
-  // Only animate transitions for non-dashboard pages
-  const shouldAnimate = !isDashboard
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
       {/* Only show Navbar on non-dashboard pages */}
       {!isDashboard && <Navbar />}
       
-      {shouldAnimate ? (
+      {isDashboard ? (
+        // Dashboard routes without page transitions
+        <Routes>
+          <Route path="/dashboard/*" element={
+            <ProtectedRoute requireAuth={true}>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      ) : (
+        // Main site routes with page transitions
         <AnimatePresence mode="wait">
           <PageTransition key={location.pathname}>
             <Routes location={location}>
@@ -54,38 +61,9 @@ function AppContent() {
                 </ProtectedRoute>
               } />
               <Route path="/checkout" element={<Checkout />} />
-              <Route path="/dashboard/*" element={
-                <ProtectedRoute requireAuth={true}>
-                  <Dashboard />
-                </ProtectedRoute>
-              } />
             </Routes>
           </PageTransition>
         </AnimatePresence>
-      ) : (
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/collection" element={<Collection />} />
-          <Route path="/product/:id" element={<Product />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/signup" element={
-            <ProtectedRoute requireAuth={false}>
-              <Signup />
-            </ProtectedRoute>
-          } />
-          <Route path="/login" element={
-            <ProtectedRoute requireAuth={false}>
-              <Login />
-            </ProtectedRoute>
-          } />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/dashboard/*" element={
-            <ProtectedRoute requireAuth={true}>
-              <Dashboard />
-            </ProtectedRoute>
-          } />
-        </Routes>
       )}
     </div>
   )
