@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion'
 import Navbar from './components/Navbar'
 import PageTransition from './components/PageTransition'
 import ProtectedRoute from './components/ProtectedRoute'
+import AuthDebug from './components/AuthDebug'
 
 // Pages
 import Home from './pages/Home'
@@ -65,6 +66,9 @@ function AppContent() {
           <Route path="/checkout" element={<Checkout />} />
         </Routes>
       )}
+      
+      {/* Debug component for development */}
+      <AuthDebug />
     </div>
   )
 }

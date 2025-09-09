@@ -43,7 +43,12 @@ export const AuthProvider = ({ children }) => {
       async (event, session) => {
         // Don't log sensitive user information
         if (import.meta.env.DEV) {
-          console.log('Auth state changed:', event);
+          console.log('🔐 Auth state changed:', {
+            event,
+            hasUser: !!session?.user,
+            userEmail: session?.user?.email,
+            isConfirmed: !!session?.user?.email_confirmed_at
+          });
         }
         setUser(session?.user ?? null);
         setLoading(false);
@@ -157,24 +162,24 @@ export const AuthProvider = ({ children }) => {
       
       // Provide specific error messages for better user experience
       let errorMessage;
-      switch (error.message) {
-        case 'Email not confirmed':
-          errorMessage = 'Please check your email and click the confirmation link before signing in.';
-          break;
-        case 'Invalid login credentials':
-          errorMessage = 'Invalid email or password. Please check your credentials and try again.';
-          break;
-        case 'Too many login attempts. Please wait before trying again.':
-          errorMessage = error.message;
-          break;
-        case 'User not found':
-          errorMessage = 'No account found with this email address.';
-          break;
-        case 'Wrong password':
-          errorMessage = 'Incorrect password. Please try again.';
-          break;
-        default:
-          errorMessage = 'Sign in failed. Please try again.';
+      const errorCode = error.code || error.error_code;
+      
+      // Handle different error types based on both message and code
+      if (error.message === 'Email not confirmed' || errorCode === 'email_not_confirmed') {
+        errorMessage = 'Your email address has not been confirmed yet. Please check your email and click the confirmation link, or use the "Resend confirmation email" button below.';
+      } else if (error.message === 'Invalid login credentials') {
+        // This could be wrong password or non-existent email
+        errorMessage = 'Invalid email or password. Please double-check your credentials and try again.';
+      } else if (error.message === 'Too many login attempts. Please wait before trying again.' || error.message.includes('rate limit')) {
+        errorMessage = error.message;
+      } else if (error.message === 'User not found') {
+        errorMessage = 'No account found with this email address. Please check your email or create a new account.';
+      } else if (error.message === 'Wrong password') {
+        errorMessage = 'Incorrect password. Please try again or use "Forgot Password" if you need to reset it.';
+      } else if (error.message.includes('network') || error.message.includes('fetch')) {
+        errorMessage = 'Connection error. Please check your internet connection and try again.';
+      } else {
+        errorMessage = error.message || 'Sign in failed. Please try again.';
       }
       
       setError(errorMessage);

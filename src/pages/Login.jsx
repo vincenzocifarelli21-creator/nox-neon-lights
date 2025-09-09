@@ -81,14 +81,23 @@ const Login = () => {
         setError(error.message || 'Failed to sign in');
         
         // Show resend confirmation option if email is not confirmed
-        if (error.message && error.message.includes('confirmation')) {
+        if (error.message && (error.message.includes('confirmation') || error.message.includes('not been confirmed'))) {
           setShowResendConfirmation(true);
         }
         return;
       }
 
-      // Redirect to the intended page or dashboard
-      navigate(from, { replace: true });
+      // Success! Clear any existing errors
+      setError('');
+      setShowResendConfirmation(false);
+      setResendSuccess(false);
+      
+      // Add a small delay to ensure auth state is updated
+      setTimeout(() => {
+        // Redirect to the intended page or dashboard
+        const redirectPath = from && from !== '/login' ? from : '/dashboard';
+        navigate(redirectPath, { replace: true });
+      }, 100);
     } catch (err) {
       setError('An unexpected error occurred');
     }
