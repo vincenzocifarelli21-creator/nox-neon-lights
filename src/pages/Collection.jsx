@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const Collection = () => {
+  console.log('🎨 COLLECTION PAGE RENDERED - You are on the Collection page');
+  console.log('Current URL should be:', window.location.pathname);
   const products = [
     {
       id: 1,

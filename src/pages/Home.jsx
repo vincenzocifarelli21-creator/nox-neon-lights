@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
+  console.log('🏠 HOME PAGE RENDERED - You are on the Home page');
+  console.log('Current URL should be:', window.location.pathname);
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
     animate: { opacity: 1, y: 0 },
