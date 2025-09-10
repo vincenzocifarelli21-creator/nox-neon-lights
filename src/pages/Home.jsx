@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import AnimatedNeonLines from '../components/AnimatedNeonLines';
 
 const Home = () => {
   console.log('🏠 HOME PAGE RENDERED - You are on the Home page');
@@ -110,75 +111,8 @@ const Home = () => {
           </motion.div>
         </div>
 
-        {/* Floating neon elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <motion.div
-            className="absolute top-1/4 left-10 w-2 h-32 bg-neon-orange-intense rounded-full opacity-50"
-            animate={{
-              y: [-20, 20, -20],
-              opacity: [0.4, 0.7, 0.4],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            style={{
-              boxShadow: '0 0 15px #FF2D00, 0 0 30px #FF2D00, 0 0 45px #FF2D00'
-            }}
-          />
-          
-          <motion.div
-            className="absolute top-1/3 right-16 w-3 h-24 bg-neon-pink-hot rounded-full opacity-50"
-            animate={{
-              y: [20, -20, 20],
-              opacity: [0.4, 0.7, 0.4],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1
-            }}
-            style={{
-              boxShadow: '0 0 15px #FF1493, 0 0 30px #FF1493'
-            }}
-          />
-          
-          <motion.div
-            className="absolute bottom-1/4 left-1/4 w-1 h-20 bg-neon-teal-electric rounded-full opacity-50"
-            animate={{
-              y: [-15, 15, -15],
-              opacity: [0.4, 0.7, 0.4],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 0.5
-            }}
-            style={{
-              boxShadow: '0 0 15px #00FFA5, 0 0 30px #00FFA5, 0 0 45px #00FFA5'
-            }}
-          />
-          
-          <motion.div
-            className="absolute top-2/3 right-1/3 w-2 h-16 bg-neon-purple rounded-full opacity-50"
-            animate={{
-              y: [15, -15, 15],
-              opacity: [0.4, 0.7, 0.4],
-            }}
-            transition={{
-              duration: 3.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2
-            }}
-            style={{
-              boxShadow: '0 0 15px #BF40BF, 0 0 30px #BF40BF, 0 0 45px #BF40BF'
-            }}
-          />
-        </div>
+        {/* Realistic animated neon lines background */}
+        <AnimatedNeonLines className="opacity-60" />
       </section>
 
       {/* Features Section */}

@@ -136,6 +136,110 @@ h1, h2, h3, h4, h5, h6, p, span, div, a {
   animation: glow-pulse 2s ease-in-out infinite alternate;
 }
 
+/* Enhanced Neon Line Effects */
+.neon-line {
+  filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 8px currentColor) drop-shadow(0 0 12px currentColor);
+}
+
+.neon-line-subtle {
+  filter: drop-shadow(0 0 2px currentColor) drop-shadow(0 0 4px currentColor);
+}
+
+.neon-line-intense {
+  filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 12px currentColor) drop-shadow(0 0 20px currentColor) drop-shadow(0 0 30px currentColor);
+}
+
+/* Neon tube flicker animation */
+@keyframes neon-flicker {
+  0%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 16px currentColor);
+  }
+  2% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 8px currentColor);
+  }
+  4% {
+    opacity: 1;
+    filter: drop-shadow(0 0 12px currentColor) drop-shadow(0 0 20px currentColor);
+  }
+  8% {
+    opacity: 0.9;
+    filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 12px currentColor);
+  }
+  10% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 16px currentColor);
+  }
+  92% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 16px currentColor);
+  }
+  94% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 3px currentColor) drop-shadow(0 0 6px currentColor);
+  }
+  96% {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px currentColor) drop-shadow(0 0 18px currentColor);
+  }
+  98% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 5px currentColor) drop-shadow(0 0 10px currentColor);
+  }
+}
+
+.animate-neon-flicker {
+  animation: neon-flicker 6s ease-in-out infinite;
+}
+
+/* Neon buzz/hum effect */
+@keyframes neon-buzz {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 16px currentColor);
+  }
+  50% {
+    filter: drop-shadow(0 0 12px currentColor) drop-shadow(0 0 24px currentColor);
+  }
+}
+
+.animate-neon-buzz {
+  animation: neon-buzz 0.1s ease-in-out infinite alternate;
+}
+
+/* Realistic neon glow backgrounds */
+.neon-glow-bg {
+  background: radial-gradient(ellipse at center, 
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(0, 255, 255, 0.02) 30%,
+    rgba(255, 0, 128, 0.02) 60%,
+    transparent 100%);
+  backdrop-filter: blur(1px);
+}
+
+/* Electric current effect */
+@keyframes electric-current {
+  0% {
+    box-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+  }
+  25% {
+    box-shadow: 0 0 2px currentColor, 0 0 5px currentColor, 0 0 8px currentColor;
+  }
+  50% {
+    box-shadow: 0 0 8px currentColor, 0 0 16px currentColor, 0 0 24px currentColor;
+  }
+  75% {
+    box-shadow: 0 0 3px currentColor, 0 0 6px currentColor, 0 0 12px currentColor;
+  }
+  100% {
+    box-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+  }
+}
+
+.animate-electric-current {
+  animation: electric-current 0.3s ease-in-out infinite;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

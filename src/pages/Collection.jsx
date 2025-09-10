@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import AnimatedNeonLines from '../components/AnimatedNeonLines';
 
 const Collection = () => {
   console.log('🎨 COLLECTION PAGE RENDERED - You are on the Collection page');
@@ -142,8 +143,11 @@ const Collection = () => {
   );
 
   return (
-    <div className="min-h-screen cyberpunk-bg pt-24 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen cyberpunk-bg pt-24 pb-12 relative">
+      {/* Animated Neon Background */}
+      <AnimatedNeonLines className="opacity-20" intensity="subtle" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <motion.div
           className="text-center mb-12"
