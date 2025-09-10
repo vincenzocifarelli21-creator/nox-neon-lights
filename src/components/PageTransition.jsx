@@ -1,10 +1,25 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 
 const PageTransition = ({ children }) => {
   const location = useLocation();
+  const shouldReduceMotion = useReducedMotion();
 
-  const pageVariants = {
+  // Detect mobile devices
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
+  // Simplified animations for mobile or reduced motion preference
+  const pageVariants = shouldReduceMotion || isMobile ? {
+    initial: {
+      opacity: 0,
+    },
+    in: {
+      opacity: 1,
+    },
+    out: {
+      opacity: 0,
+    },
+  } : {
     initial: {
       opacity: 0,
       y: 20,
@@ -22,7 +37,7 @@ const PageTransition = ({ children }) => {
   const pageTransition = {
     type: 'tween',
     ease: 'easeInOut',
-    duration: 0.4,
+    duration: shouldReduceMotion || isMobile ? 0.2 : 0.4,
   };
 
   return (

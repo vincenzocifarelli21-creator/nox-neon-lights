@@ -46,27 +46,33 @@ function AppContent() {
           } />
         </Routes>
       ) : (
-        // Main site routes - TEMPORARILY WITHOUT animations for debugging
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/collection" element={<Collection />} />
-          <Route path="/product/:id" element={<Product />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/signup" element={
-            <ProtectedRoute requireAuth={false}>
-              <Signup />
-            </ProtectedRoute>
-          } />
-          <Route path="/signup-success" element={<SignupSuccess />} />
-          <Route path="/login" element={
-            <ProtectedRoute requireAuth={false}>
-              <Login />
-            </ProtectedRoute>
-          } />
-          <Route path="/email-confirmed" element={<EmailConfirmed />} />
-          <Route path="/checkout" element={<Checkout />} />
-        </Routes>
+        // Main site routes with optimized mobile-friendly animations
+        <AnimatePresence mode="wait">
+          <Routes key={location.pathname}>
+            <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+            <Route path="/collection" element={<PageTransition><Collection /></PageTransition>} />
+            <Route path="/product/:id" element={<PageTransition><Product /></PageTransition>} />
+            <Route path="/about" element={<PageTransition><About /></PageTransition>} />
+            <Route path="/cart" element={<PageTransition><Cart /></PageTransition>} />
+            <Route path="/signup" element={
+              <PageTransition>
+                <ProtectedRoute requireAuth={false}>
+                  <Signup />
+                </ProtectedRoute>
+              </PageTransition>
+            } />
+            <Route path="/signup-success" element={<PageTransition><SignupSuccess /></PageTransition>} />
+            <Route path="/login" element={
+              <PageTransition>
+                <ProtectedRoute requireAuth={false}>
+                  <Login />
+                </ProtectedRoute>
+              </PageTransition>
+            } />
+            <Route path="/email-confirmed" element={<PageTransition><EmailConfirmed /></PageTransition>} />
+            <Route path="/checkout" element={<PageTransition><Checkout /></PageTransition>} />
+          </Routes>
+        </AnimatePresence>
       )}
       
       {/* Debug component for development */}

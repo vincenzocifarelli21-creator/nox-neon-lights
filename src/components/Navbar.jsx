@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { itemCount } = useCart();
   const { user, signOut, profile } = useAuth();
 
@@ -55,7 +56,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <div className="text-2xl font-audiowide font-bold text-neon-teal-electric text-neon animate-glow-pulse">
+            <div className="text-2xl font-audiowide font-bold text-neon-teal-electric text-neon motion-safe:animate-glow-pulse motion-reduce:animate-none">
               NN
             </div>
             <span className="ml-2 text-sm font-orbitron text-neon-orange-intense hidden sm:block">
@@ -79,7 +80,7 @@ const Navbar = () => {
                   >
                     {link.name}
                     {link.name === 'Shop' && itemCount > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-neon-orange text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold animate-pulse">
+                      <span className="absolute -top-1 -right-1 bg-neon-orange text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold motion-safe:animate-pulse motion-reduce:animate-none">
                         {itemCount > 99 ? '99+' : itemCount}
                       </span>
                     )}
@@ -140,44 +141,56 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden cyberpunk-bg border-t border-neon-teal/30">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                onClick={() => setIsOpen(false)}
-                className={`block px-3 py-2 text-base font-orbitron transition-all duration-300 relative ${
-                  isActive(link.path)
-                    ? 'text-neon-teal text-neon bg-black/30'
-                    : 'text-white/80 hover:text-neon-orange-bright hover:bg-black/20'
-                }`}
-              >
-                <span className="flex items-center gap-2">
-                  {link.name}
-                  {link.name === 'Shop' && itemCount > 0 && (
-                    <span className="bg-neon-orange text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold animate-pulse">
-                      {itemCount > 99 ? '99+' : itemCount}
-                    </span>
-                  )}
-                </span>
-              </Link>
-            ))}
+        <div className="md:hidden fixed inset-0 z-[60] pointer-events-auto">
+          {/* Backdrop to prevent click-through and allow closing */}
+          <div
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => setIsOpen(false)}
+          />
+          {/* Slide-down menu panel */}
+          <div className="relative cyberpunk-bg border-t border-neon-teal/30 shadow-xl max-h-[80vh] overflow-y-auto">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              {navLinks.map((link) => (
+                <button
+                  key={link.name}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setIsOpen(false);
+                    navigate(link.path, { replace: false });
+                  }}
+                  className={`w-full text-left px-3 py-2 text-base font-orbitron transition-all duration-200 relative ${
+                    isActive(link.path)
+                      ? 'text-neon-teal text-neon bg-black/30'
+                      : 'text-white/80 hover:text-neon-orange-bright hover:bg-black/20'
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    {link.name}
+                    {link.name === 'Shop' && itemCount > 0 && (
+                      <span className="bg-neon-orange text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold motion-safe:animate-pulse motion-reduce:animate-none">
+                        {itemCount > 99 ? '99+' : itemCount}
+                      </span>
+                    )}
+                  </span>
+                </button>
+              ))}
             
             {/* Mobile User Info & Sign Out */}
-            {user && (
-              <div className="border-t border-neon-teal/30 pt-3 mt-3">
-                <div className="px-3 py-2 text-sm font-orbitron text-neon-cyan">
-                  {profile?.first_name ? `Hi, ${profile.first_name}` : 'Hi there!'}
+              {user && (
+                <div className="border-t border-neon-teal/30 pt-3 mt-3">
+                  <div className="px-3 py-2 text-sm font-orbitron text-neon-cyan">
+                    {profile?.first_name ? `Hi, ${profile.first_name}` : 'Hi there!'}
+                  </div>
+                  <button
+                    onClick={handleSignOut}
+                    className="w-full text-left px-3 py-2 text-base font-orbitron text-white/80 hover:text-neon-red hover:bg-black/20 transition-all duration-200"
+                  >
+                    Sign Out
+                  </button>
                 </div>
-                <button
-                  onClick={handleSignOut}
-                  className="w-full text-left px-3 py-2 text-base font-orbitron text-white/80 hover:text-neon-red hover:bg-black/20 transition-all duration-300"
-                >
-                  Sign Out
-                </button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       )}
