@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
-const AnimatedNeonLines = ({ className = '', intensity = 'normal' }) => {
+const AnimatedNeonLines = ({ className = '', intensity = 'normal', safeArea = null }) => {
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
@@ -14,111 +14,61 @@ const AnimatedNeonLines = ({ className = '', intensity = 'normal' }) => {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
-  // Define different line configurations
+  // Define only horizontal lines (5-6), colors inspired by reference (blue and orange)
   const lineConfigs = [
-    // Horizontal lines
-    { 
+    {
       type: 'horizontal',
-      color: '#00BFFF', // Electric blue
-      startX: '10%', 
-      startY: '15%', 
-      length: '25%',
-      duration: 3.5,
-      delay: 0
+      color: '#26A5FF', // neon blue
+      startX: '8%',
+      startY: '18%',
+      length: '32%',
+      duration: 3.6,
+      delay: 0.1
     },
-    { 
+    {
       type: 'horizontal',
-      color: '#FF1493', // Hot pink
-      startX: '60%', 
-      startY: '25%', 
+      color: '#FF5A3C', // neon orange/red
+      startX: '58%',
+      startY: '24%',
       length: '30%',
-      duration: 4,
-      delay: 0.5
-    },
-    { 
-      type: 'horizontal',
-      color: '#32FF32', // Lime green
-      startX: '15%', 
-      startY: '45%', 
-      length: '20%',
-      duration: 3,
-      delay: 1
-    },
-    { 
-      type: 'horizontal',
-      color: '#FF6B35', // Orange
-      startX: '70%', 
-      startY: '55%', 
-      length: '25%',
       duration: 3.8,
+      delay: 0.6
+    },
+    {
+      type: 'horizontal',
+      color: '#26A5FF',
+      startX: '12%',
+      startY: '40%',
+      length: '28%',
+      duration: 3.2,
+      delay: 1.0
+    },
+    {
+      type: 'horizontal',
+      color: '#FF5A3C',
+      startX: '50%',
+      startY: '56%',
+      length: '26%',
+      duration: 3.5,
       delay: 1.5
     },
-    { 
+    {
       type: 'horizontal',
-      color: '#BF40BF', // Purple
-      startX: '5%', 
-      startY: '75%', 
-      length: '35%',
-      duration: 4.2,
-      delay: 2
-    },
-    { 
-      type: 'horizontal',
-      color: '#00D4D4', // Cyan
-      startX: '55%', 
-      startY: '85%', 
-      length: '28%',
-      duration: 3.3,
-      delay: 2.5
-    },
-    // Vertical lines
-    { 
-      type: 'vertical',
-      color: '#FF4500', // Red-orange
-      startX: '25%', 
-      startY: '20%', 
-      length: '30%',
-      duration: 3.7,
-      delay: 0.8
-    },
-    { 
-      type: 'vertical',
-      color: '#1DE9B6', // Teal
-      startX: '45%', 
-      startY: '10%', 
-      length: '40%',
-      duration: 4.1,
-      delay: 1.3
-    },
-    { 
-      type: 'vertical',
-      color: '#9C27B0', // Deep purple
-      startX: '80%', 
-      startY: '30%', 
-      length: '25%',
-      duration: 3.6,
-      delay: 1.8
-    },
-    // Diagonal lines
-    { 
-      type: 'diagonal',
-      color: '#FFEB3B', // Yellow
-      startX: '40%', 
-      startY: '60%', 
-      length: '20%',
+      color: '#26A5FF',
+      startX: '18%',
+      startY: '72%',
+      length: '34%',
       duration: 3.9,
-      delay: 2.2,
-      angle: 45
+      delay: 2.0
     },
-    { 
-      type: 'diagonal',
-      color: '#E91E63', // Pink
-      startX: '65%', 
-      startY: '70%', 
-      length: '18%',
-      duration: 3.4,
-      delay: 2.7,
-      angle: -30
+    {
+      type: 'horizontal',
+      color: '#FF5A3C',
+      startX: '62%',
+      startY: '82%',
+      length: '22%',
+      duration: 3.1,
+      delay: 2.4
     }
   ];
 
@@ -157,26 +107,32 @@ const AnimatedNeonLines = ({ className = '', intensity = 'normal' }) => {
               </filter>
             </React.Fragment>
           ))}
+          {/* Optional safe area mask to avoid text overlap */}
+          {safeArea && (
+            <mask id="safe-area-mask">
+              {/* White shows, black hides */}
+              <rect x="0" y="0" width={windowSize.width} height={windowSize.height} fill="white" />
+              <rect 
+                x={(windowSize.width * parseFloat(safeArea.x)) / 100}
+                y={(windowSize.height * parseFloat(safeArea.y)) / 100}
+                width={(windowSize.width * parseFloat(safeArea.width)) / 100}
+                height={(windowSize.height * parseFloat(safeArea.height)) / 100}
+                fill="black" 
+                rx="24"
+              />
+            </mask>
+          )}
         </defs>
 
+        {(safeArea ? <g mask="url(#safe-area-mask)"> : <g>)}
         {lineConfigs.map((line, index) => {
           const startX = (windowSize.width * parseFloat(line.startX)) / 100;
           const startY = (windowSize.height * parseFloat(line.startY)) / 100;
-          
-          let endX, endY;
           const lengthPx = (windowSize.width * parseFloat(line.length)) / 100;
           
-          if (line.type === 'horizontal') {
-            endX = startX + lengthPx;
-            endY = startY;
-          } else if (line.type === 'vertical') {
-            endX = startX;
-            endY = startY + lengthPx;
-          } else if (line.type === 'diagonal') {
-            const angle = (line.angle || 45) * (Math.PI / 180);
-            endX = startX + lengthPx * Math.cos(angle);
-            endY = startY + lengthPx * Math.sin(angle);
-          }
+          // All lines are horizontal
+          const endX = startX + lengthPx;
+          const endY = startY;
 
           return (
             <g key={index}>
@@ -258,9 +214,9 @@ const AnimatedNeonLines = ({ className = '', intensity = 'normal' }) => {
               {/* Flickering highlights */}
               <motion.line
                 x1={startX + lengthPx * 0.3}
-                y1={startY + (line.type === 'vertical' ? lengthPx * 0.3 : 0)}
+                y1={startY}
                 x2={startX + lengthPx * 0.7}
-                y2={startY + (line.type === 'vertical' ? lengthPx * 0.7 : 0)}
+                y2={startY}
                 stroke="white"
                 strokeWidth="1"
                 strokeOpacity="0.9"
@@ -280,6 +236,7 @@ const AnimatedNeonLines = ({ className = '', intensity = 'normal' }) => {
             </g>
           );
         })}
+        </g>
       </svg>
     </div>
   );

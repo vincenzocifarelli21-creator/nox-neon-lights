@@ -112,7 +112,15 @@ const Home = () => {
         </div>
 
         {/* Realistic animated neon lines background */}
-        <AnimatedNeonLines className="opacity-60" />
+        <AnimatedNeonLines 
+          className="opacity-60" 
+          safeArea={{
+            x: '25%',    // 25% from left
+            y: '35%',    // 35% from top  
+            width: '50%', // 50% width
+            height: '30%' // 30% height
+          }}
+        />
       </section>
 
       {/* Features Section */}

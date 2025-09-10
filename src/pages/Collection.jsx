@@ -145,7 +145,7 @@ const Collection = () => {
   return (
     <div className="min-h-screen cyberpunk-bg pt-24 pb-12 relative">
       {/* Animated Neon Background */}
-      <AnimatedNeonLines className="opacity-20" intensity="subtle" />
+      <AnimatedNeonLines className="opacity-20" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
